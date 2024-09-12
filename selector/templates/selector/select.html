@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Student Selector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        .table-container {
+            width: 60%;
+            margin: 0 auto;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        .table-container th, .table-container td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        /* Set unified orange color for table titles */
+        .table-container th {
+            background-color: #FFA500; /* Orange color */
+            color: white;
+        }
+
+        .table-container tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table-container tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-green {
+            background-color: #28a745;
+        }
+
+        .btn-green:hover {
+            background-color: #218838;
+        }
+
+        .btn-blue {
+            background-color: #007bff;
+        }
+
+        .btn-blue:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 80%;
+            margin-right: 10px;
+        }
+
+        .add-btn, .group-btn {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-btn:hover, .group-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .student-selected {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Ordered List for students */
+        .student-list {
+            list-style-type: decimal; /* This ensures numbers appear */
+            padding: 0;
+            margin: 0;
+            border: 1px solid #ddd;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .student-list li {
+            padding: 10px;
+            font-size: 1.2em;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .student-list li:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .student-list li:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+
+        .student-list li:last-child {
+            border-bottom: none; /* Remove bottom border for last item */
+        }
+
+        .student-list-number {
+            font-weight: bold;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Random Student Selector</h1>
+
+    <!-- Table containing everything -->
+    <table class="table-container">
+        <thead>
+            <tr>
+                <th colspan="2">Random Student Selector</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Random Student Selector -->
+            <tr>
+                <td colspan="2">
+                    <div class="student-selected">{{ selected_student }}</div>
+                    <button class="btn btn-green" onclick="window.location.reload()">Select Random Student</button>
+                </td>
+            </tr>
+
+            <!-- Student List -->
+            <tr>
+                <th>Student List</th>
+                <th>Actions</th>
+            </tr>
+            <tr>
+                <td>
+                    <!-- Ordered list for students -->
+                    <ol class="student-list">
+                        {% for student in students %}
+                            <li><span class="student-list-number">{{ forloop.counter }}</span> {{ student }}</li>
+                        {% endfor %}
+                    </ol>
+                </td>
+                <td rowspan="2">
+                    <!-- Error message section -->
+                    {% if error_message %}
+                        <p class="error-message">{{ error_message }}</p>
+                    {% endif %}
+
+                    <!-- Add Student -->
+                    <h2>Add a Student</h2>
+                    <form method="POST" action="{% url 'add_student' %}">
+                        {% csrf_token %}
+                        <input type="text" name="student_name" placeholder="Enter student name" required>
+                        <button class="add-btn" type="submit">Add Student</button>
+                    </form>
+
+                    <!-- Group Students -->
+                    <h2>Group Students</h2>
+                    <form method="POST" action="{% url 'group_students' %}">
+                        {% csrf_token %}
+                        <input type="number" name="group_size" placeholder="Group size" min="1" max="{{ students|length }}" required>
+                        <button class="group-btn" type="submit">Create Groups</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
