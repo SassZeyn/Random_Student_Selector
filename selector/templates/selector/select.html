@@ -71,6 +71,14 @@
             background-color: #0056b3;
         }
 
+        .delete-cross {
+            font-size: 1.5em;
+            color: red;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
         input[type="text"], input[type="number"] {
             padding: 10px;
             font-size: 1em;
@@ -173,7 +181,14 @@
                     <!-- Ordered list for students -->
                     <ol class="student-list">
                         {% for student in students %}
-                            <li><span class="student-list-number">{{ forloop.counter }}</span> {{ student }}</li>
+                            <li>
+                                <span class="student-list-number">{{ forloop.counter }}</span>
+                                {{ student }}
+                                <form action="{% url 'delete_student' student %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button class="delete-cross" type="submit">&times;</button>
+                                </form>
+                            </li>
                         {% endfor %}
                     </ol>
                 </td>

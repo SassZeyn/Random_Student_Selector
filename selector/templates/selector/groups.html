@@ -3,73 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Groups</title>
+    <title>Random Student Groups</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             background-color: #f4f4f9;
+            text-align: center;
             padding: 20px;
         }
 
         h1 {
             font-size: 2.5em;
-            margin-bottom: 20px;
             color: #333;
         }
 
+        .group-container {
+            width: 60%;
+            margin: 0 auto;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            padding: 20px;
+        }
+
         .group {
-            margin-bottom: 20px;
+            margin: 20px 0;
             padding: 10px;
-            background-color: #ddd;
-            border-radius: 10px;
-            list-style-type: none;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
         }
 
-        .group h3 {
-            margin-bottom: 10px;
+        .group h2 {
+            color: #007bff;
         }
 
-        ul {
-            padding: 0;
+        .student-list {
+            list-style-type: none; /* Remove bullet points */
+            padding-left: 0; /* Align text properly */
+            margin: 0;
         }
 
-        li {
-            padding: 5px;
-        }
-
-        .btn {
-            padding: 10px 20px;
+        .student-list li {
+            padding: 10px;
             font-size: 1.2em;
+            border-bottom: 1px solid #ddd;
+            background-color: white;
+        }
+
+        .student-list li:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        /* Button styling for consistency */
+        .btn-blue {
             background-color: #007bff;
             color: white;
             border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
             cursor: pointer;
             margin-top: 20px;
             transition: background-color 0.3s ease;
         }
 
-        .btn:hover {
+        .btn-blue:hover {
             background-color: #0056b3;
         }
+
     </style>
 </head>
 <body>
 
-    <h1>Student Groups</h1>
+    <h1>Random Student Groups</h1>
 
-    {% for group in groups %}
+    <div class="group-container">
+        {% for group in groups %}
         <div class="group">
-            <h3>Group {{ forloop.counter }}</h3>
-            <ul>
+            <h2>Group {{ forloop.counter }}</h2>
+            <ul class="student-list">
                 {% for student in group %}
-                    <li>{{ student }}</li>
+                <li>{{ student }}</li>
                 {% endfor %}
             </ul>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 
-    <button class="btn" onclick="window.location.href='{% url 'select_random_student' %}'">Go Back</button>
+    <button class="btn-blue" onclick="window.location.href='{% url 'select_random_student' %}'">Back to Student Selection</button>
 
 </body>
 </html>
